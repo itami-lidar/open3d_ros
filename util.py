@@ -25,6 +25,10 @@ TEST_POINTS = [
 ]
 
 def convert_pcl(data):
+    '''
+    input: PointCloud2
+    output: open3d.geometry.PointCloud
+    '''
     header = '''# .PCD v0.7 - Point Cloud Data file format
 VERSION 0.7
 FIELDS x y z rgb
