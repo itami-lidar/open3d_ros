@@ -6,8 +6,9 @@ from sensor_msgs.msg import PointCloud2
 import util
 import open3d as o3d
 
+
 def down_sampling(pcl_data):
-    downpcd = o3d.voxel_down_sample(pcl_data, voxel_size = 0.05)
+    downpcd = o3d.voxel_down_sample(pcl_data, voxel_size=0.05)
 
     return downpcd
 
@@ -18,6 +19,7 @@ def callback(data):
     result_pcl = down_sampling(pcl_data)
 
     util.publish_pointcloud(result_pcl, data)
+
 
 if __name__ == "__main__":
     rospy.init_node('listener', anonymous=True)

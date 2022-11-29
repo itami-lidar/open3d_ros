@@ -24,6 +24,7 @@ TEST_POINTS = [
     [0.0, 0.0, 0.3, 0x0000ff],
 ]
 
+
 def convert_pcl(data):
     '''
     input: PointCloud2
@@ -62,24 +63,29 @@ DATA ascii'''
 
     return pcd
 
+
 def publish_pointcloud(output_data, input_data):
     # convert pcl data format
     pc_p = np.asarray(output_data.points)
     pc_c = np.asarray(output_data.colors)
     tmp_c = np.c_[np.zeros(pc_c.shape[1])]
-    tmp_c = np.floor(pc_c[:,0] * 255) * 2**16 + np.floor(pc_c[:,1] * 255) * 2**8 + np.floor(pc_c[:,2] * 255) # 16bit shift, 8bit shift, 0bit shift
+    tmp_c = np.floor(pc_c[:, 0] * 255) * 2**16 + np.floor(pc_c[:, 1] * 255) * \
+        2**8 + np.floor(pc_c[:, 2] *
+                        255)  # 16bit shift, 8bit shift, 0bit shift
 
     pc_pc = np.c_[pc_p, tmp_c]
 
     # publish point cloud
-    output = pc2.create_cloud(Header(frame_id=input_data.header.frame_id), FIELDS , pc_pc)
+    output = pc2.create_cloud(
+        Header(frame_id=input_data.header.frame_id), FIELDS, pc_pc)
     pub.publish(output)
+
 
 def publish_testcloud(input_data):
     # publish point cloud
-    output = pc2.create_cloud(Header(frame_id=input_data.header.frame_id), FIELDS , TEST_POINTS)
+    output = pc2.create_cloud(
+        Header(frame_id=input_data.header.frame_id), FIELDS, TEST_POINTS)
     pub.publish(output)
-
 
 
 def callback(data):
@@ -89,6 +95,7 @@ def callback(data):
     publish_pointcloud(result_pcl, data)
 
     # publish_testcloud(data)
+
 
 if __name__ == "__main__":
     rospy.init_node('listener', anonymous=True)
